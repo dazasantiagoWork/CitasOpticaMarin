@@ -140,6 +140,11 @@ export default function BookingForm() {
     return (
         <div className="booking-card">
             <div className="card-header">
+                <img
+                    src="/Logo Optica Marin.jpeg"
+                    alt="Logo Optica Marin"
+                    className="app-logo"
+                />
                 <h2>Citas Optometría</h2>
                 <p>Óptica Marín</p>
             </div>
