@@ -141,7 +141,7 @@ export default function BookingForm() {
         <div className="booking-card">
             <div className="card-header">
                 <img
-                    src="/Logo Optica Marin.jpeg"
+                    src="/logo-optica-marin.jpeg"
                     alt="Logo Optica Marin"
                     className="app-logo"
                 />
