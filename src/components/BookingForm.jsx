@@ -5,7 +5,7 @@ import { es } from 'date-fns/locale';
 import 'react-calendar/dist/Calendar.css';
 import './BookingForm.css';
 
-const WEBHOOK_URL = 'https://n8n-production-6d0f.up.railway.app/webhook-test/agendamiento-landing';
+const WEBHOOK_URL = 'https://n8n-production-6d0f.up.railway.app/webhook/agendamiento-landing';
 
 const BookingService = {
     async fetchSlots(date, city) {
@@ -66,6 +66,7 @@ export default function BookingForm() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [hasSearched, setHasSearched] = useState(false);
 
     const handleFormChange = (e) => {
         const { name, value } = e.target;
@@ -87,8 +88,10 @@ export default function BookingForm() {
     const handleDateSelect = async (date) => {
         setSelectedDate(date);
         setSelectedSlot(null);
+        setAvailableSlots([]);
         setLoading(true);
         setError('');
+        setHasSearched(true);
 
         try {
             const slots = await BookingService.fetchSlots(date, formData.city);
@@ -131,6 +134,7 @@ export default function BookingForm() {
         });
         setSelectedSlot(null);
         setAvailableSlots([]);
+        setHasSearched(false);
     };
 
     return (
@@ -161,6 +165,7 @@ export default function BookingForm() {
                         onBack={() => setStep(1)}
                         loading={loading}
                         error={error}
+                        hasSearched={hasSearched}
                     />
                 )}
 
@@ -238,7 +243,7 @@ function StepInfo({ formData, onChange, onSubmit, error }) {
     );
 }
 
-function StepCalendar({ date, onDateChange, slots, selectedSlot, onSlotSelect, onConfirm, onBack, loading, error }) {
+function StepCalendar({ date, onDateChange, slots, selectedSlot, onSlotSelect, onConfirm, onBack, loading, error, hasSearched }) {
     return (
         <div className="calendar-view fade-in">
             <div className="view-header">
@@ -262,6 +267,8 @@ function StepCalendar({ date, onDateChange, slots, selectedSlot, onSlotSelect, o
 
                 {loading ? (
                     <div className="loading-spinner">Buscando horarios...</div>
+                ) : error ? (
+                    null
                 ) : slots.length > 0 ? (
                     <div className="slots-grid">
                         {slots.map(slot => (
@@ -274,8 +281,10 @@ function StepCalendar({ date, onDateChange, slots, selectedSlot, onSlotSelect, o
                             </button>
                         ))}
                     </div>
-                ) : (
+                ) : (hasSearched) ? (
                     <p className="no-slots">No hay horarios disponibles para este día.</p>
+                ) : (
+                    <p className="instruction-text">Selecciona un día en el calendario para ver horarios.</p>
                 )}
             </div>
 
