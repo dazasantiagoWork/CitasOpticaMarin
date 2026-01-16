@@ -23,7 +23,8 @@ const BookingService = {
             if (!response.ok) throw new Error('Error en el servidor');
 
             const data = await response.json();
-            return Array.isArray(data) ? data : (data.slots || []);
+            const rawSlots = Array.isArray(data) ? data : (data.slots || []);
+            return rawSlots.filter(slot => slot.time);
         } catch (error) {
             console.error('Error fetchSlots:', error);
             throw error;
