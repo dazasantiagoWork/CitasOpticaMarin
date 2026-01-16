@@ -274,7 +274,7 @@ function StepCalendar({ date, onDateChange, slots, selectedSlot, onSlotSelect, o
                         ))}
                     </div>
                 ) : (
-                    <p className="no-slots">No hay horarios disponibles o selecciona otro día.</p>
+                    <p className="no-slots">No hay horarios disponibles para este día.</p>
                 )}
             </div>
 
